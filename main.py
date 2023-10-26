@@ -8,21 +8,96 @@ global_data = {
     "time_signature": "4/4"
 }
 
-##def get_lilypond_notation(notes):
-##    # map user input to LilyPond syntax
-##    note_mapping = {
-##        "A": "a",
-##        "B": "b",
-##        "C": "c",
-##        "D": "d",
-##        "E": "e",
-##        "F": "f",
-##        "G": "g"
-##    }
+def get_lilypond_notation(notes: list):
+   # map user input to LilyPond syntax
+   note_mapping = {
+       'C': 'c', 'C#': 'cis', 'Db': 'des',
+        'D': 'd', 'D#': 'dis', 'Eb': 'ees',
+        'E': 'e', 'F': 'f', 'F#': 'fis',
+        'Gb': 'ges', 'G': 'g', 'G#': 'gis',
+        'Ab': 'aes', 'A': 'a', 'A#': 'ais',
+        'Bb': 'bes', 'B': 'b'
+   }
 
-##    return " ".join(note_mapping[note.upper()] for note in notes.split())
+   return [note_mapping[note.upper()] for note in notes]
 
-def generate_notation(filename):
+def shift_notes(notes: list, shift: int) -> str:
+    # Define the note mapping
+    note_to_num = {
+        'c': 0, 'cis': 1, 'des': 1,
+        'd': 2, 'dis': 3, 'ees': 3,
+        'e': 4, 'f': 5, 'fis': 6,
+        'ges': 6, 'g': 7, 'gis': 8,
+        'aes': 8, 'a': 9, 'ais': 10,
+        'bes': 10, 'b': 11
+    }
+    # Create a reverse mapping
+    num_to_note = {v: k for k, v in note_to_num.items()}
+  
+    # Shift each note and join them back into a string
+    shifted_notes = [num_to_note[(note_to_num[note] + shift) % 12] for note in notes]
+    
+    return shifted_notes
+
+def generate_notation(filename, notes):
+    with open(filename, 'w') as file:
+        # Global settings
+
+        global_string = textwrap.dedent(f'''\
+            global = {{
+              \\key {global_data["key"]} \\major
+              \\time {global_data["time_signature"]}
+            }}\n\n''')
+
+        file.write(global_string)
+
+        # Voices
+
+#   a4    b     c   d     |
+#   b4    c     d    e     |
+#   c4   d     e    f     |
+#   d4    e     f    g     |
+
+#   e8      fis  g     a   |
+#   fis4         g         |
+#   e16 fis g  a fis g a b |
+#   a4           a         |
+
+        num_measures = 2
+
+        file.write("\\parallelMusic voiceA,voiceB,voiceC,voiceD {\n")
+        for i in range(num_measures):
+            file.write(textwrap.dedent(f'''\
+                {notes[0][i*4]}4 {notes[0][i*4 + 1]} {notes[0][i*4 + 2]} {notes[0][i*4 + 3]} |
+                {notes[1][i*4]}4 {notes[1][i*4 + 1]} {notes[1][i*4 + 2]} {notes[1][i*4 + 3]} |
+                {notes[2][i*4]}4 {notes[2][i*4 + 1]} {notes[2][i*4 + 2]} {notes[2][i*4 + 3]} |
+                {notes[3][i*4]}4 {notes[3][i*4 + 1]} {notes[3][i*4 + 2]} {notes[3][i*4 + 3]} |
+                '''))
+        file.write("}\n\n")
+
+        file.write('''\\score {
+          \\new PianoStaff <<
+             \\new Staff {
+               \\global
+               <<
+                 \\relative c'' \\voiceA
+                 \\\\
+                 \\relative c'  \\voiceB
+               >>
+             }
+             \\new Staff {
+               \\global \\clef bass
+               <<
+                 \\relative c \\voiceC
+                 \\\\
+                 \\relative c \\voiceD
+               >>
+             }
+          >>
+        }
+        ''')
+
+
     # call LilyPond command-line tool on the file
     subprocess.call(['lilypond', filename])
 
@@ -36,53 +111,13 @@ def open_pdf(filename):
         subprocess.call(('xdg-open', filename))
 
 if __name__ == "__main__":
-    notes = input("Enter musical notes separated by space: ")
-##    lilypond_notation = get_lilypond_notation(notes)
-    bassline = notes.split()
+    bassline = input("Enter musical notes separated by space: ")
 
-    with open('notes.ly', 'w') as file:
-        # Global settings
-
-        global_string = textwrap.dedent(f'''\
-            global = {{
-              \\key {global_data["key"]} \\major
-              \\time {global_data["time_signature"]}
-            }}\n\n''')
-
-        file.write(global_string)
-
-        # Voices
+    b = get_lilypond_notation(bassline.split())
+    t = shift_notes(b, 4)
+    a = shift_notes(b, 7)
+    s = shift_notes(b, 11)
+    notes = [s, a, t, b]
         
-        file.write("\\parallelMusic voiceA,voiceB,voiceC,voiceD {{\n")
-        for i, note in enumerate(bassline):
-            if i % 4 == 0:
-                file.write("  % Bar {}\n".format(i // 4 + 1))
-            file.write("  {}8    ".format(note))
-            if (i + 1) % 4 == 0 or i == len(bassline) - 1:
-                file.write("|\n")
-        file.write("}}\n\n")
-
-        file.write("\\score {\n")
-        file.write("  \\new PianoStaff <<\n")
-        file.write("     \\new Staff {\n")
-        file.write("       \\global\n")
-        file.write("       <<\n")
-        file.write("         \\relative c'' \\voiceA\n")
-        file.write("         \\\\\n")
-        file.write("         \\relative c'  \\voiceB\n")
-        file.write("       >>\n")
-        file.write("     }\n")
-        file.write("     \\new Staff {\n")
-        file.write("       \\global \\clef bass\n")
-        file.write("       <<\n")
-        file.write("         \\relative c \\voiceC\n")
-        file.write("         \\\\\n")
-        file.write("         \\relative c \\voiceD\n")
-        file.write("       >>\n")
-        file.write("     }\n")
-        file.write("  >>\n")
-        file.write("}\n")
-        
-
-    generate_notation('notes.ly')
+    generate_notation('notes.ly', notes)
     open_pdf('notes.pdf')
