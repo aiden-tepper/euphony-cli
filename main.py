@@ -19,7 +19,7 @@ def get_lilypond_notation(notes: list):
         'Bb': 'bes', 'B': 'b'
    }
 
-   return [note_mapping[note.upper()] for note in notes]
+   return [note_mapping[note] for note in notes]
 
 def shift_notes(notes: list, shift: int) -> str:
     # Define the note mapping
@@ -50,18 +50,6 @@ def generate_notation(filename, notes):
             }}\n\n''')
 
         file.write(global_string)
-
-        # Voices
-
-#   a4    b     c   d     |
-#   b4    c     d    e     |
-#   c4   d     e    f     |
-#   d4    e     f    g     |
-
-#   e8      fis  g     a   |
-#   fis4         g         |
-#   e16 fis g  a fis g a b |
-#   a4           a         |
 
         num_measures = 2
 

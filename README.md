@@ -16,10 +16,9 @@ enter either bassline, Roman numerals, or alphabetical chord progression
 output full voicings as midi
 option to print all 4 voices to one midi track or send each voice to separate track
 
+## Rules
 > The main concerns of composers writing homorhythmic, homophonic music were both unity and independence. This seems contrary at first. However, unity is a vertical dimension concern (the chords), while independence is a horizontal concern (the lines). Each of these concerns is addressed in princples of voice spacing.
 > [Sun Music School](https://sunmusicschool.weebly.com/uploads/2/5/4/5/25453716/voice_leading.pdf)
-
-## Rules
 * Unity
   * root position triads -- double the root
   * first inversion triads -- double the root or 5th, 3rd if absolutely necessary
@@ -65,6 +64,23 @@ option to print all 4 voices to one midi track or send each voice to separate tr
   * move the bass to the root of the next chord
   * in contrary motion to the bass, move the remaining voices to the nearest chord tone of the next chord
 
- 
+## Notes
+*If no octave changing mark is used on a pitch, its octave is calculated so that the interval with the previous note is less than a fifth. As SAT will not move by an interval larger than a 3rd, this is only a concern for keeping B within range.*
+### Voice Ranges
+* Soprano
+  * C4 - G5
+  * C' - G''
+  * Translated to relative C: C - G'
+* Alto
+  * G3 - D5
+  * G - D''
+  * Translated to relative C: G, - D'
+* Tenor
+  * C3 - G4
+  * C - G'
+* Bass
+  * E2 - C4
+  * E, - C'
+
 ## References
 [Sun Music School](https://sunmusicschool.weebly.com/uploads/2/5/4/5/25453716/voice_leading.pdf)
