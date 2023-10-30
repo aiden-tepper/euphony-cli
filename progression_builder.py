@@ -23,5 +23,4 @@ def get_progression() -> str:
         progression.append(next)
         curr = next
 
-    print("\nFull progression: ", progression)
     return progression, key
