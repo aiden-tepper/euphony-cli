@@ -3,10 +3,50 @@ import os
 import sys
 import textwrap
 
+from progression_builder import get_progression
+from voice_leading_builder import get_voice_leading
+
 global_data = {
     "key": "c",
     "time_signature": "4/4"
 }
+
+chord_mapping = {
+    "I": [0, 4, 7, 11], 
+    "viidim/iii": [3, 6, 9, 12], 
+    "V/iii": [11, 15, 18, 21], 
+    "viidim/vi": [8, 11, 14, 17], 
+    "V/vi": [4, 8, 11, 14], 
+    "viidim/ii": [1, 4, 7, 10], 
+    "V/ii": [9, 13, 16, 19], 
+    "viidim/V": [6, 9, 12, 15], 
+    "V/V": [2, 6, 9, 12], 
+    "viidim/IV": [4, 7, 10, 13], 
+    "V/IV": [0, 4, 7, 10], 
+    "iii": [4, 7, 11, 14], 
+    "vi": [9, 12, 16, 19], 
+    "IV": [5, 9, 12, 16], 
+    "ii": [2, 5, 12, 16], 
+    "viidim": [11, 14, 17, 22], 
+    "V6/4": [7, 12, 16, 19], 
+    "N6": [5, 8, 13, 17], 
+    "+6": [8, 12, 14, 18], 
+    "V": [7, 11, 14, 17],
+    "viidim/VII": [9, 12, 15, 18],
+    "V/VII": [5, 9, 12, 15],
+    "viidim/III": [2, 5, 8, 11],
+    "V/III": [10, 14, 17, 20],
+    "iv": [5, 8, 12, 15],
+    "VII": [10, 14, 17, 20],
+    "III": [3, 7, 10, 14],
+    "VI": [8, 12, 15, 19],
+    "iidim": [2, 5, 8, 11],
+    "i": [0, 3, 7, 10]
+}
+
+# TODO
+def get_chord_notes(key: str, chord: str) -> list:
+    return []
 
 def get_lilypond_notation(notes: list):
    # map user input to LilyPond syntax
@@ -99,13 +139,15 @@ def open_pdf(filename):
         subprocess.call(('xdg-open', filename))
 
 if __name__ == "__main__":
-    bassline = input("Enter musical notes separated by space: ")
+    # bassline = input("Enter musical notes separated by space: ")
 
-    b = get_lilypond_notation(bassline.split())
-    t = shift_notes(b, 4)
-    a = shift_notes(b, 7)
-    s = shift_notes(b, 11)
-    notes = [s, a, t, b]
-        
+    # b = get_lilypond_notation(bassline.split())
+    # t = shift_notes(b, 4)
+    # a = shift_notes(b, 7)
+    # s = shift_notes(b, 11)
+    # notes = [s, a, t, b]
+
+    progression, key = get_progression
+    notes = get_voice_leading(progression, key)
     generate_notation('notes.ly', notes)
     open_pdf('notes.pdf')

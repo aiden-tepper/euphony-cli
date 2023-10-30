@@ -71,16 +71,20 @@ option to print all 4 voices to one midi track or send each voice to separate tr
   * C4 - G5
   * C' - G''
   * Translated to relative C: C - G'
+  * 20 - 39
 * Alto
   * G3 - D5
   * G - D''
   * Translated to relative C: G, - D'
+  * 15 - 34
 * Tenor
   * C3 - G4
   * C - G'
+  * 8 - 27
 * Bass
   * E2 - C4
   * E, - C'
+  * 0 - 20
 
 ## References
 [Sun Music School](https://sunmusicschool.weebly.com/uploads/2/5/4/5/25453716/voice_leading.pdf)

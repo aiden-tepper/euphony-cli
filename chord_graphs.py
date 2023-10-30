@@ -119,18 +119,18 @@ Major.edges["V", "vi"]["note"] = "Deceptive Cadence"
 
 Minor = nx.DiGraph()
 
-minor_chords = ["viidim/IV", "V7/IV", "viidim/VII", "V7/VII", "viidim/III", "V7/III", "viidim/vi", "V7/vi", "viidim/V", "V/V", "iv", "VII", "III", "VI", "iv", "iidim", "N6", "+6", "V6/4", "viidim", "V", "i", "I"]
+minor_chords = ["viidim/IV", "V/IV", "viidim/VII", "V/VII", "viidim/III", "V/III", "viidim/vi", "V/vi", "viidim/V", "V/V", "iv", "VII", "III", "VI", "iidim", "N6", "+6", "V6/4", "viidim", "V", "i", "I"]
 Minor.add_nodes_from(minor_chords)
 
 minor_transitions = [
     ("i", "viidim/IV"),
-    ("i", "V7/IV"),
+    ("i", "V/IV"),
     ("i", "viidim/VII"),
-    ("i", "V7/VII"),
+    ("i", "V/VII"),
     ("i", "viidim/III"),
-    ("i", "V7/III"),
+    ("i", "V/III"),
     ("i", "viidim/vi"),
-    ("i", "V7/vi"),
+    ("i", "V/vi"),
     ("i", "viidim/V"),
     ("i", "V/V"),
     ("i", "iv"),
@@ -146,49 +146,49 @@ minor_transitions = [
     ("i", "V"),
 
     ("viidim/IV", "viidim/VII"),
-    ("viidim/IV", "V7/VII"),
+    ("viidim/IV", "V/VII"),
     ("viidim/IV", "iv"),
-    ("V7/IV", "viidim/VII"),
-    ("V7/IV", "V7/VII"),
-    ("V7/IV", "iv"),
+    ("V/IV", "viidim/VII"),
+    ("V/IV", "V/VII"),
+    ("V/IV", "iv"),
 
     ("viidim/VII", "viidim/III"),
-    ("viidim/VII", "V7/III"),
+    ("viidim/VII", "V/III"),
     ("viidim/VII", "VII"),
-    ("V7/VII", "viidim/III"),
-    ("V7/VII", "V7/III"),
-    ("V7/VII", "VII"),
+    ("V/VII", "viidim/III"),
+    ("V/VII", "V/III"),
+    ("V/VII", "VII"),
 
     ("viidim/III", "viidim/vi"),
-    ("viidim/III", "V7/vi"),
+    ("viidim/III", "V/vi"),
     ("viidim/III", "III"),
-    ("V7/III", "viidim/vi"),
-    ("V7/III", "V7/vi"),
-    ("V7/III", "III"),
+    ("V/III", "viidim/vi"),
+    ("V/III", "V/vi"),
+    ("V/III", "III"),
 
     ("viidim/vi", "VI"),
     ("viidim/vi", "iv"),
     ("viidim/vi", "iidim"),
-    ("V7/vi", "VI"),
-    ("V7/vi", "iv"),
-    ("V7/vi", "iidim"),
+    ("V/vi", "VI"),
+    ("V/vi", "iv"),
+    ("V/vi", "iidim"),
 
     ("viidim/V", "V6/4"),
     ("viidim/V", "viidim"),
     ("viidim/V", "V"),
-    ("V7/V", "V6/4"),
-    ("V7/V", "viidim"),
-    ("V7/V", "V"),
+    ("V/V", "V6/4"),
+    ("V/V", "viidim"),
+    ("V/V", "V"),
 
     ("iv", "viidim/III"),
-    ("iv", "V7/iii"),
+    ("iv", "V/iii"),
     ("iv", "VII"),
 
     ("VII", "III"),
     ("VII", "i"),
 
     ("III", "viidim/vi"),
-    ("III", "V7/vi"),
+    ("III", "V/vi"),
     ("III", "VI"),
 
     ("VI", "iv"),
