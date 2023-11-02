@@ -24,25 +24,37 @@ def get_lilypond_notation(notes: list):
 
    return [note_mapping[note] for note in notes]
 
-def shift_notes(notes: list, shift: int) -> str:
-    # Define the note mapping
-    note_to_num = {
-        'c': 0, 'cis': 1, 'des': 1,
-        'd': 2, 'dis': 3, 'ees': 3,
-        'e': 4, 'f': 5, 'fis': 6,
-        'ges': 6, 'g': 7, 'gis': 8,
-        'aes': 8, 'a': 9, 'ais': 10,
-        'bes': 10, 'b': 11
-    }
-    # Create a reverse mapping
-    num_to_note = {v: k for k, v in note_to_num.items()}
+# def shift_notes(notes: list, shift: int) -> str:
+#     # Define the note mapping
+#     note_to_num = {
+#         'c': 0, 'cis': 1, 'des': 1,
+#         'd': 2, 'dis': 3, 'ees': 3,
+#         'e': 4, 'f': 5, 'fis': 6,
+#         'ges': 6, 'g': 7, 'gis': 8,
+#         'aes': 8, 'a': 9, 'ais': 10,
+#         'bes': 10, 'b': 11
+#     }
+#     # Create a reverse mapping
+#     num_to_note = {v: k for k, v in note_to_num.items()}
   
-    # Shift each note and join them back into a string
-    shifted_notes = [num_to_note[(note_to_num[note] + shift) % 12] for note in notes]
+#     # Shift each note and join them back into a string
+#     shifted_notes = [num_to_note[(note_to_num[note] + shift) % 12] for note in notes]
     
-    return shifted_notes
+#     return shifted_notes
 
-def generate_notation(filename, notes):
+def to_note(note_num) -> str:
+    num_to_note = {
+        0: 'c', 1: 'cis', 1: 'des',
+        2: 'd', 3: 'dis', 3: 'ees',
+        4: 'e', 5: 'f', 6: 'fis',
+        6: 'ges', 7: 'g', 8: 'gis',
+        8: 'aes', 9: 'a', 10: 'ais',
+        10: 'bes', 11: 'b'
+    }
+
+    return num_to_note[(note_num-8) % 12]
+
+def generate_notation(filename, chords):
     with open(filename, 'w') as file:
         # Global settings
 
@@ -54,16 +66,32 @@ def generate_notation(filename, notes):
 
         file.write(global_string)
 
-        num_measures = 2
+        # chords = [[10, 13, 20, 24], [10, 15, 19, 25], [8, 15, 19, 24]]
+        chords = list(zip(*chords))
+        # chords = [[10, 10, 8], [13, 15, 15], [20, 19, 19], [24, 25, 24]]
 
         file.write("\\parallelMusic voiceA,voiceB,voiceC,voiceD {\n")
-        for i in range(num_measures):
-            file.write(textwrap.dedent(f'''\
-                {notes[0][i*4]}4 {notes[0][i*4 + 1]} {notes[0][i*4 + 2]} {notes[0][i*4 + 3]} |
-                {notes[1][i*4]}4 {notes[1][i*4 + 1]} {notes[1][i*4 + 2]} {notes[1][i*4 + 3]} |
-                {notes[2][i*4]}4 {notes[2][i*4 + 1]} {notes[2][i*4 + 2]} {notes[2][i*4 + 3]} |
-                {notes[3][i*4]}4 {notes[3][i*4 + 1]} {notes[3][i*4 + 2]} {notes[3][i*4 + 3]} |
-                '''))
+        # for i in range(len(chords[0])):
+        #     # file.write(textwrap.dedent(f'''\
+        #     #     {notes[0][i*4]}4 {notes[0][i*4 + 1]} {notes[0][i*4 + 2]} {notes[0][i*4 + 3]} |
+        #     #     {notes[1][i*4]}4 {notes[1][i*4 + 1]} {notes[1][i*4 + 2]} {notes[1][i*4 + 3]} |
+        #     #     {notes[2][i*4]}4 {notes[2][i*4 + 1]} {notes[2][i*4 + 2]} {notes[2][i*4 + 3]} |
+        #     #     {notes[3][i*4]}4 {notes[3][i*4 + 1]} {notes[3][i*4 + 2]} {notes[3][i*4 + 3]} |
+        #     #     '''))
+        #     file.write()
+        # file.write("}\n\n")
+
+        for voice in chords:
+            line = ""
+            for i, note_num in enumerate(voice):
+                note = to_note(note_num)
+                line += str(note)
+                if i == 0:
+                    line += str(4)
+                line += " "
+            line += "|\n"
+            print(line)
+            file.write(line)
         file.write("}\n\n")
 
         file.write('''\\score {
@@ -110,7 +138,9 @@ if __name__ == "__main__":
     # s = shift_notes(b, 11)
     # notes = [s, a, t, b]
 
-    progression, key = get_progression()
-    notes = get_voice_leading(progression, key)
-    # generate_notation('notes.ly', notes)
+    # progression, key = get_progression()
+    # notes = get_voice_leading(progression, key)
+    # print(notes)
+    chords = [[10, 13, 20, 24], [10, 15, 19, 25], [8, 15, 19, 24]]
+    generate_notation('notes.ly', chords)
     # open_pdf('notes.pdf')

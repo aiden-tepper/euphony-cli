@@ -42,7 +42,7 @@ key_to_num = {
 
 def get_chord_notes(key: str, roman_numeral: str) -> list:
     chord = chord_mapping[roman_numeral]
-    offset = key_to_num[key]
+    offset = key_to_num[key] + 8
     return [note + offset for note in chord]
 
 def octave_transform(input_chord, root):
@@ -106,4 +106,21 @@ def get_voice_leading(progression_as_str: list, key: str) -> list:
         progression_as_matrix.append(get_chord_notes(key, chord))
     print(f'''\nProgression matrix: {progression_as_matrix}''')
 
-    return []
+    voice_leading = []
+
+    prev = None
+    for a, b in zip(progression_as_matrix, progression_as_matrix[1:]):
+        if prev is None:
+            prev = a
+            print("\n")
+            print(a)
+            voice_leading.append(a)
+        
+        prev = voice_lead(prev, b)
+        print(prev)
+        voice_leading.append(prev)
+
+    return voice_leading
+
+if __name__ == "__main__":
+    get_voice_leading(['ii', 'V', 'I'], "C")
