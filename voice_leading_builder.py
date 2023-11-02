@@ -98,4 +98,4 @@ def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> l
     return voice_leading
 
 if __name__ == "__main__":
-    get_voice_leading(['ii', 'V', 'I'], "C")
+    get_voice_leading(['ii', 'V', 'I'], "C", "major")

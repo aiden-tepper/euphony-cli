@@ -20,9 +20,11 @@ option to print all 4 voices to one midi track or send each voice to separate tr
 > The main concerns of composers writing homorhythmic, homophonic music were both unity and independence. This seems contrary at first. However, unity is a vertical dimension concern (the chords), while independence is a horizontal concern (the lines). Each of these concerns is addressed in princples of voice spacing.
 > [Sun Music School](https://sunmusicschool.weebly.com/uploads/2/5/4/5/25453716/voice_leading.pdf)
 * Unity
-  * root position triads -- double the root
-  * first inversion triads -- double the root or 5th, 3rd if absolutely necessary
-  * second inversion triads -- double the 5th
+  * root position triads -- double the root (bass)
+  * first inversion triads -- double the root or 5th, 3rd (bass) if absolutely necessary (try not to)
+    * Exception: viidim6 and iidim6: double the 3rd (bass)
+    * Exception: consecutive first inversion chords, alternate between doubling and not doubling the 3rd (bass)
+  * second inversion triads -- double the 5th (bass)
   * seventh chords -- one voice for each note, omitting 5th if necessary
   * avoid doubling leading tone
   * never have more than an octave between adjacent voices in SAT
@@ -88,3 +90,4 @@ option to print all 4 voices to one midi track or send each voice to separate tr
 
 ## References
 [Sun Music School](https://sunmusicschool.weebly.com/uploads/2/5/4/5/25453716/voice_leading.pdf)
+[Puget Sound Music Theory](https://musictheory.pugetsound.edu/mt21c/MusicTheory.html)
