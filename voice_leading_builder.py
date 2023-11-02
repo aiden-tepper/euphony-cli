@@ -43,7 +43,7 @@ key_to_num = {
 def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
     chord = chord_mapping[roman_numeral]
     offset = key_to_num[key]
-    if major_minor == "Minor":
+    if major_minor == "minor":
         offset = (offset - 3) % 12
     return [note + offset for note in chord]
 
