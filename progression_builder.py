@@ -8,8 +8,11 @@ def get_progression() -> str:
 
     if "m" in key:
         Chart = Minor
+        major_minor = "Minor"
+        key = key[:-1]
     else:
         Chart = Major
+        major_minor = "Major"
 
     while True:
         print("\nCURRENT CHORD: ", curr)
@@ -23,4 +26,4 @@ def get_progression() -> str:
         progression.append(next)
         curr = next
 
-    return progression, key
+    return progression, key, major_minor

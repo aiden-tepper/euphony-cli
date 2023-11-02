@@ -6,11 +6,6 @@ import textwrap
 from progression_builder import get_progression
 from voice_leading_builder import get_voice_leading
 
-global_data = {
-    "key": "c",
-    "time_signature": "4/4"
-}
-
 def get_lilypond_notation(notes: list):
    # map user input to LilyPond syntax
    note_mapping = {
@@ -24,24 +19,6 @@ def get_lilypond_notation(notes: list):
 
    return [note_mapping[note] for note in notes]
 
-# def shift_notes(notes: list, shift: int) -> str:
-#     # Define the note mapping
-#     note_to_num = {
-#         'c': 0, 'cis': 1, 'des': 1,
-#         'd': 2, 'dis': 3, 'ees': 3,
-#         'e': 4, 'f': 5, 'fis': 6,
-#         'ges': 6, 'g': 7, 'gis': 8,
-#         'aes': 8, 'a': 9, 'ais': 10,
-#         'bes': 10, 'b': 11
-#     }
-#     # Create a reverse mapping
-#     num_to_note = {v: k for k, v in note_to_num.items()}
-  
-#     # Shift each note and join them back into a string
-#     shifted_notes = [num_to_note[(note_to_num[note] + shift) % 12] for note in notes]
-    
-#     return shifted_notes
-
 def to_note(note_num) -> str:
     num_to_note = {
         0: 'c', 1: 'cis', 1: 'des',
@@ -52,16 +29,16 @@ def to_note(note_num) -> str:
         10: 'bes', 11: 'b'
     }
 
-    return num_to_note[(note_num-8) % 12]
+    return num_to_note[note_num % 12]
 
-def generate_notation(filename, chords):
+def generate_notation(filename, chords, key, major_minor):
     with open(filename, 'w') as file:
         # Global settings
 
         global_string = textwrap.dedent(f'''\
             global = {{
-              \\key {global_data["key"]} \\major
-              \\time {global_data["time_signature"]}
+              \\key {key} \\{major_minor}
+              \\time 4/4
             }}\n\n''')
 
         file.write(global_string)
@@ -130,17 +107,9 @@ def open_pdf(filename):
         subprocess.call(('xdg-open', filename))
 
 if __name__ == "__main__":
-    # bassline = input("Enter musical notes separated by space: ")
-
-    # b = get_lilypond_notation(bassline.split())
-    # t = shift_notes(b, 4)
-    # a = shift_notes(b, 7)
-    # s = shift_notes(b, 11)
-    # notes = [s, a, t, b]
-
-    # progression, key = get_progression()
-    # notes = get_voice_leading(progression, key)
-    # print(notes)
-    chords = [[10, 13, 20, 24], [10, 15, 19, 25], [8, 15, 19, 24]]
-    generate_notation('notes.ly', chords)
-    # open_pdf('notes.pdf')
+    progression, key, major_minor = get_progression()
+    chords = get_voice_leading(progression, key, major_minor)
+    # print(chords)
+    # chords = [[2, 5, 9, 12], [5, 7, 11, 14], [4, 7, 11, 12]]
+    generate_notation('notes.ly', chords, key, major_minor)
+    open_pdf('notes.pdf')

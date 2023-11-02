@@ -13,7 +13,7 @@ chord_mapping = {
     "iii": [4, 7, 11, 14], 
     "vi": [9, 12, 16, 19], 
     "IV": [5, 9, 12, 16], 
-    "ii": [2, 5, 12, 16], 
+    "ii": [2, 5, 9, 12], 
     "viidim": [11, 14, 17, 22], 
     "V6/4": [7, 12, 16, 19], 
     "N6": [5, 8, 13, 17], 
@@ -40,9 +40,11 @@ key_to_num = {
     'Bb': 10, 'B': 11
 }
 
-def get_chord_notes(key: str, roman_numeral: str) -> list:
+def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
     chord = chord_mapping[roman_numeral]
-    offset = key_to_num[key] + 8
+    offset = key_to_num[key]
+    if major_minor == "Minor":
+        offset = (offset - 3) % 12
     return [note + offset for note in chord]
 
 def octave_transform(input_chord, root):
@@ -71,39 +73,12 @@ def voice_lead(chord_a, chord_b):
     
     return b_voicing
 
-# # Example chord progression
-# chord_progression = [
-#     [64, 67, 71],  # Chord E5 Minor
-#     [60, 64, 67],  # Chord C5 Major
-#     [66, 69, 71],  # Chord Fs5 Minor
-#     [71, 74, 79]   # Chord B5 Minor
-# ]
-
-# from time import sleep
-
-# # Initialize the last chord to None
-# last_c = None
-
-# for a, b in zip(chord_progression, chord_progression[1:]):
-#     if last_c is None:
-#         # Play the first chord
-#         print("Playing:", a)
-#         last_c = a
-#         sleep(1)
-    
-#     # Perform voice leading to transition from a to b
-#     last_c = voice_lead(last_c, b)
-    
-#     print("Playing:", last_c)
-#     sleep(1)
-
-# TODO
-def get_voice_leading(progression_as_str: list, key: str) -> list:
+def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> list:
     print(f'''\nFull progression: {progression_as_str}''')
 
     progression_as_matrix = []
     for chord in progression_as_str:
-        progression_as_matrix.append(get_chord_notes(key, chord))
+        progression_as_matrix.append(get_chord_notes(key, major_minor, chord))
     print(f'''\nProgression matrix: {progression_as_matrix}''')
 
     voice_leading = []
