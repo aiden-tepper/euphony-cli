@@ -1,23 +1,23 @@
 chord_mapping = {
-    "I": [0, 4, 7, 11], 
-    "viidim/iii": [3, 6, 9, 12], 
-    "V/iii": [11, 15, 18, 21], 
-    "viidim/vi": [8, 11, 14, 17], 
-    "V/vi": [4, 8, 11, 14], 
-    "viidim/ii": [1, 4, 7, 10], 
-    "V/ii": [9, 13, 16, 19], 
-    "viidim/V": [6, 9, 12, 15], 
-    "V/V": [2, 6, 9, 12], 
-    "viidim/IV": [4, 7, 10, 13], 
-    "V/IV": [0, 4, 7, 10], 
-    "iii": [4, 7, 11, 14], 
-    "vi": [9, 12, 16, 19], 
-    "IV": [5, 9, 12, 16], 
-    "ii": [2, 5, 9, 12], 
-    "viidim": [11, 14, 17, 22], 
-    "V6/4": [7, 12, 16, 19], 
-    "N6": [5, 8, 13, 17], 
-    "+6": [8, 12, 14, 18], 
+    "I": [0, 4, 7, 11],
+    "viidim/iii": [3, 6, 9, 12],
+    "V/iii": [11, 15, 18, 21],
+    "viidim/vi": [8, 11, 14, 17],
+    "V/vi": [4, 8, 11, 14],
+    "viidim/ii": [1, 4, 7, 10],
+    "V/ii": [9, 13, 16, 19],
+    "viidim/V": [6, 9, 12, 15],
+    "V/V": [2, 6, 9, 12],
+    "viidim/IV": [4, 7, 10, 13],
+    "V/IV": [0, 4, 7, 10],
+    "iii": [4, 7, 11, 14],
+    "vi": [9, 12, 16, 19],
+    "IV": [5, 9, 12, 16],
+    "ii": [2, 5, 9, 12],
+    "viidim": [11, 14, 17, 22],
+    "V6/4": [7, 12, 16, 19],
+    "N6": [5, 8, 13, 17],
+    "+6": [8, 12, 14, 18],
     "V": [7, 11, 14, 17],
     "viidim/VII": [9, 12, 15, 18],
     "V/VII": [5, 9, 12, 15],
@@ -58,20 +58,53 @@ def t_matrix(chord_a, chord_b):
     chord_b_transformed = octave_transform(chord_b, root)
     return [b - a for a, b in zip(chord_a_transformed, chord_b_transformed)]
 
-def voice_lead(chord_a, chord_b):
-    # Voice lead from chord_a to chord_b
-    root = chord_a[0]
+# def voice_lead(chord_a, chord_b):
+#     # Voice lead from chord_a to chord_b
+#     root = chord_a[0]
 
-    # Calculate the mapping of notes in chord_a to the sorted version
-    a_leadings = [(x, octave_transform(chord_a, root).index(root + (x % 12))) for x in chord_a]
+#     # Calculate the mapping of notes in chord_a to the sorted version
+#     a_leadings = [(x, octave_transform(chord_a, root).index(root + (x % 12))) for x in chord_a]
     
-    # Calculate the t_matrix
-    t_matrix_ab = t_matrix(chord_a, chord_b)
+#     # Calculate the t_matrix
+#     t_matrix_ab = t_matrix(chord_a, chord_b)
     
-    # Calculate the new voicing for chord_b
-    b_voicing = [x + t_matrix_ab[y] for (x, y) in a_leadings]
+#     # Calculate the new voicing for chord_b
+#     b_voicing = [x + t_matrix_ab[y] for (x, y) in a_leadings]
     
-    return b_voicing
+#     return b_voicing
+
+___IN PROGRESS___
+
+def voice_lead(chord_a, chord_b):
+    # root = chord_a[0]
+    for num1 in range(0, 21, 12):
+        for num2 in range(8, 28, 12):
+            for num3 in range(15, 35, 12):
+                for num4 in range(20, 40, 12):
+                    variation = [num1 + chord_b[0],
+                                num2 + chord_b[1],
+                                num3 + chord_b[2],
+                                num4 + chord_b[3]]
+                    print(variation)
+    asdf = input("options")
+
+numbers = [2, 5, 9, 12]
+lower_limits = [0, 8, 15, 20]
+upper_limits = [20, 27, 34, 39]
+
+result = []
+
+for num, lower_limit, upper_limit in zip(numbers, lower_limits, upper_limits):
+    x = 0
+    while num + 12 * x <= upper_limit:
+        value = num + 12 * x
+        if value >= lower_limit:
+            result.append(value)
+        x += 1
+    print(result)
+    result = []
+
+___IN PROGRESS___
 
 def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> list:
     print(f'''\nFull progression: {progression_as_str}''')
