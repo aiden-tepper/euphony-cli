@@ -1,4 +1,4 @@
-from itertools import product
+from itertools import product, permutations
 
 chord_mapping = {
     "I": [0, 4, 7, 11],
@@ -71,38 +71,34 @@ print(chord)
 
 # next, we create a list of the possible permutations of the chord
 
-permutations = []
-permutations.append([chord[0], chord[1], chord[2], chord[3]])
-permutations.append([chord[0], chord[1], chord[3], chord[2]])
-permutations.append([chord[0], chord[2], chord[1], chord[3]])
-permutations.append([chord[0], chord[2], chord[3], chord[1]])
-permutations.append([chord[0], chord[3], chord[1], chord[2]])
-permutations.append([chord[0], chord[3], chord[2], chord[1]])
+permutations = [p for p in permutations(chord) if p[0] == chord[0]]
 print(permutations)
 
 # next, for each permutation, we consider every version that fits within the voice ranges
 # we add each possibility to a list
 
-def interpolate_lists(a, b, c, d):
-    # Use itertools.product to generate all combinations
-    combinations = list(product(a, b, c, d))
-
-    # Convert each combination tuple to a list
-    interpolated_lists = [list(combination) for combination in combinations]
-
-    return interpolated_lists
-
-
-result = []
-# for x in permutations:
-#     print(x)
-
+x = []
 for num, lower_limit, upper_limit in zip(chord, lower_limits, upper_limits):
-    x = 0
-    while num + 12 * x <= upper_limit:
-        value = num + 12 * x
+    i = 0
+    result = []
+    while num + 12 * i <= upper_limit:
+        value = num + 12 * i
         if value >= lower_limit:
             result.append(value)
-        x += 1
-    print(result)
-    result = []
+        i += 1
+    x.append(result)
+
+print(x)
+
+combinations = list(product(x[0], x[1], x[2], x[3]))
+interpolated_lists = [list(combination) for combination in combinations]
+print(interpolated_lists)
+
+# now, we can start to pare down erroneous voicings
+# first and most simple, we remove voicings where voices cross each other
+
+no_voice_crossing = [i for i in interpolated_lists if i[0] < i[1] < i[2] < i[3]]
+print("")
+print(no_voice_crossing)
+
+# from this point on, we can start to remove possibilities based on the rules of voice leading
