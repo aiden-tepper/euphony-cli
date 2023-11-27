@@ -73,8 +73,6 @@ def t_matrix(chord_a, chord_b):
     
 #     return b_voicing
 
-___IN PROGRESS___
-
 def voice_lead(chord_a, chord_b):
     # root = chord_a[0]
     for num1 in range(0, 21, 12):
@@ -104,7 +102,6 @@ for num, lower_limit, upper_limit in zip(numbers, lower_limits, upper_limits):
     print(result)
     result = []
 
-___IN PROGRESS___
 
 def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> list:
     print(f'''\nFull progression: {progression_as_str}''')
