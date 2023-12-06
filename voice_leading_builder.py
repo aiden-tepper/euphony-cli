@@ -84,12 +84,21 @@ def voice_lead(chord_a, chord_b):
     no_voice_crossing = [i for i in interpolated_lists if i[0] < i[1] < i[2] < i[3]]
 
     # remove voicings where S, A, or T are more than an octave apart
+    no_octave_jump = [i for i in no_voice_crossing if i[1] - i[0] <= 12 and i[2] - i[1] <= 12]
 
-    for i, voicing in enumerate(no_voice_crossing, start=1):
+    options = no_octave_jump
+
+    # remove voicings where S, A, or T move by more than a 3rd
+    if chord_a:
+        no_third_jump = [i for i in no_octave_jump if abs(chord_a[1] - i[1]) <= 4 and abs(chord_a[1] - i[1]) <= 4 and abs(chord_a[2] - i[2]) <= 4]
+        options = no_third_jump
+
+    for i, voicing in enumerate(options, start=1):
         print(f"{i}) {voicing}")
 
     choice = int(input("Choose a voicing: "))
-    voicing = no_voice_crossing[choice - 1]
+    print()
+    return options[choice - 1]
 
 def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> list:
     print(f'''\nFull progression: {progression_as_str}''')
@@ -104,16 +113,14 @@ def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> l
     prev = None
     for a, b in zip(progression_as_matrix, progression_as_matrix[1:]):
         if prev is None:
-            prev = a
-            print("\n")
-            print(a)
-            voice_leading.append(a)
+            choice = voice_lead(None, a)
+            voice_leading.append(choice)
         
         prev = voice_lead(prev, b)
-        print(prev)
         voice_leading.append(prev)
 
     return voice_leading
 
 if __name__ == "__main__":
-    get_voice_leading(['ii', 'V', 'I'], "C", "major")
+    prog = get_voice_leading(['ii', 'V', 'I'], "C", "major")
+    print('prog: ' + prog)
