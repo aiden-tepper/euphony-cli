@@ -1,3 +1,5 @@
+from itertools import product, permutations
+
 chord_mapping = {
     "I": [0, 4, 7, 11],
     "viidim/iii": [3, 6, 9, 12],
@@ -40,6 +42,11 @@ key_to_num = {
     'Bb': 10, 'B': 11
 }
 
+# establish absolute limits for each voice (S, A, T, B)
+# 0 is defined as the low C four half-steps below the bottom of the bass range
+lower_limits = [4, 12, 19, 24]
+upper_limits = [24, 31, 38, 43]
+
 def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
     chord = chord_mapping[roman_numeral]
     offset = key_to_num[key]
@@ -47,61 +54,42 @@ def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
         offset = (offset - 3) % 12
     return [note + offset for note in chord]
 
-def octave_transform(input_chord, root):
-    # Squish notes into a single octave and sort from lowest to highest
-    return sorted([(root + (x % 12)) for x in input_chord])
-
-def t_matrix(chord_a, chord_b):
-    # Get the distances between the notes of two chords
-    root = chord_a[0]
-    chord_a_transformed = octave_transform(chord_a, root)
-    chord_b_transformed = octave_transform(chord_b, root)
-    return [b - a for a, b in zip(chord_a_transformed, chord_b_transformed)]
-
-# def voice_lead(chord_a, chord_b):
-#     # Voice lead from chord_a to chord_b
-#     root = chord_a[0]
-
-#     # Calculate the mapping of notes in chord_a to the sorted version
-#     a_leadings = [(x, octave_transform(chord_a, root).index(root + (x % 12))) for x in chord_a]
-    
-#     # Calculate the t_matrix
-#     t_matrix_ab = t_matrix(chord_a, chord_b)
-    
-#     # Calculate the new voicing for chord_b
-#     b_voicing = [x + t_matrix_ab[y] for (x, y) in a_leadings]
-    
-#     return b_voicing
-
 def voice_lead(chord_a, chord_b):
-    # root = chord_a[0]
-    for num1 in range(0, 21, 12):
-        for num2 in range(8, 28, 12):
-            for num3 in range(15, 35, 12):
-                for num4 in range(20, 40, 12):
-                    variation = [num1 + chord_b[0],
-                                num2 + chord_b[1],
-                                num3 + chord_b[2],
-                                num4 + chord_b[3]]
-                    print(variation)
-    asdf = input("options")
+    # create a list of the possible permutations of the chord
+    all_poss = [p for p in permutations(chord_b) if p[0] == chord_b[0]]
 
-numbers = [2, 5, 9, 12]
-lower_limits = [0, 8, 15, 20]
-upper_limits = [20, 27, 34, 39]
+    # next, for each permutation, we consider every version that fits within the voice ranges
+    # we add each possibility to a list
+    all_poss_within_range = []
+    for poss in all_poss:
+        curr_poss_within_range = []
+        for num, lower_limit, upper_limit in zip(poss, lower_limits, upper_limits):
+            i = 0
+            result = []
+            while num + 12 * i <= upper_limit:
+                value = num + 12 * i
+                if value >= lower_limit:
+                    result.append(value)
+                i += 1
+            curr_poss_within_range.append(result)
+        all_poss_within_range.append(curr_poss_within_range)
 
-result = []
+    combinations = []
+    for c in all_poss_within_range:
+        combinations.append(list(product(c[0], c[1], c[2], c[3])))
+    combinations = [i for r in combinations for i in r]
+    interpolated_lists = [list(combination) for combination in combinations]
 
-for num, lower_limit, upper_limit in zip(numbers, lower_limits, upper_limits):
-    x = 0
-    while num + 12 * x <= upper_limit:
-        value = num + 12 * x
-        if value >= lower_limit:
-            result.append(value)
-        x += 1
-    print(result)
-    result = []
+    # remove voicings where voices cross each other
+    no_voice_crossing = [i for i in interpolated_lists if i[0] < i[1] < i[2] < i[3]]
 
+    # remove voicings where S, A, or T are more than an octave apart
+
+    for i, voicing in enumerate(no_voice_crossing, start=1):
+        print(f"{i}) {voicing}")
+
+    choice = int(input("Choose a voicing: "))
+    voicing = no_voice_crossing[choice - 1]
 
 def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> list:
     print(f'''\nFull progression: {progression_as_str}''')

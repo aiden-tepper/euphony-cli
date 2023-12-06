@@ -67,38 +67,51 @@ def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
     return [note + offset for note in chord]
 
 chord = get_chord_notes("C", "major", "ii")
-print(chord)
+# print(chord)
 
 # next, we create a list of the possible permutations of the chord
 
-permutations = [p for p in permutations(chord) if p[0] == chord[0]]
-print(permutations)
+all_poss = [p for p in permutations(chord) if p[0] == chord[0]]
+print(all_poss)
 
 # next, for each permutation, we consider every version that fits within the voice ranges
 # we add each possibility to a list
 
-x = []
-for num, lower_limit, upper_limit in zip(chord, lower_limits, upper_limits):
-    i = 0
-    result = []
-    while num + 12 * i <= upper_limit:
-        value = num + 12 * i
-        if value >= lower_limit:
-            result.append(value)
-        i += 1
-    x.append(result)
+all_poss_within_range = []
+for poss in all_poss:
+    curr_poss_within_range = []
+    for num, lower_limit, upper_limit in zip(poss, lower_limits, upper_limits):
+        i = 0
+        result = []
+        while num + 12 * i <= upper_limit:
+            value = num + 12 * i
+            if value >= lower_limit:
+                result.append(value)
+            i += 1
+        curr_poss_within_range.append(result)
+    all_poss_within_range.append(curr_poss_within_range)
 
-print(x)
+# print(all_poss_within_range)
 
-combinations = list(product(x[0], x[1], x[2], x[3]))
+combinations = []
+for c in all_poss_within_range:
+    combinations.append(list(product(c[0], c[1], c[2], c[3])))
+combinations = [i for r in combinations for i in r]
 interpolated_lists = [list(combination) for combination in combinations]
-print(interpolated_lists)
 
 # now, we can start to pare down erroneous voicings
 # first and most simple, we remove voicings where voices cross each other
 
 no_voice_crossing = [i for i in interpolated_lists if i[0] < i[1] < i[2] < i[3]]
-print("")
-print(no_voice_crossing)
 
 # from this point on, we can start to remove possibilities based on the rules of voice leading
+# remove voicings where S, A, or T are more than an octave apart
+no_octave_jump = [i for i in no_voice_crossing if i[2] - i[1] <= 12 and i[3] - i[2] <= 12]
+
+# finally, we can present the user with a list of voicings to choose from
+
+for i, voicing in enumerate(no_octave_jump, start=1):
+    print(f"{i}) {voicing}")
+
+choice = int(input("Choose a voicing: "))
+voicing = no_octave_jump[choice - 1]
