@@ -18,7 +18,5 @@ def open_pdf(filename):
 if __name__ == "__main__":
     progression, key, major_minor = get_progression()
     chords = get_voice_leading(progression, key, major_minor)
-    # print(chords)
-    # chords = [[2, 5, 9, 12], [5, 7, 11, 14], [4, 7, 11, 12]]
     generate_notation('notes.ly', chords, key, major_minor)
     open_pdf('notes.pdf')
