@@ -81,17 +81,14 @@ def voice_lead(chord_a, chord_b):
     interpolated_lists = [list(combination) for combination in combinations]
 
     # remove voicings where voices cross each other
-    no_voice_crossing = [i for i in interpolated_lists if i[0] < i[1] < i[2] < i[3]]
+    options = [i for i in interpolated_lists if i[0] < i[1] < i[2] < i[3]]
 
     # remove voicings where S, A, or T are more than an octave apart
-    no_octave_jump = [i for i in no_voice_crossing if i[1] - i[0] <= 12 and i[2] - i[1] <= 12]
-
-    options = no_octave_jump
+    options = [i for i in options if i[1] - i[0] <= 12 and i[2] - i[1] <= 12]
 
     # remove voicings where S, A, or T move by more than a 3rd
     if chord_a:
-        no_third_jump = [i for i in no_octave_jump if abs(chord_a[1] - i[1]) <= 4 and abs(chord_a[2] - i[2]) <= 4 and abs(chord_a[3] - i[3]) <= 4]
-        options = no_third_jump
+        options = [i for i in options if abs(chord_a[1] - i[1]) <= 4 and abs(chord_a[2] - i[2]) <= 4 and abs(chord_a[3] - i[3]) <= 4]
 
     for i, voicing in enumerate(options, start=1):
         print(f"{i}) {voicing}")
