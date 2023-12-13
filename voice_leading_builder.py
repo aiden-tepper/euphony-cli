@@ -1,6 +1,6 @@
 from itertools import product, permutations
 
-chord_mapping = {
+chord_mapping_sevenths = {
     "I": [0, 4, 7, 11],
     "viidim/iii": [3, 6, 9, 12],
     "V/iii": [11, 15, 18, 21],
@@ -33,6 +33,39 @@ chord_mapping = {
     "i": [0, 3, 7, 10]
 }
 
+chord_mapping = {
+    "I": [0, 4, 7],
+    "viidim/iii": [3, 6, 9],
+    "V/iii": [11, 15, 18],
+    "viidim/vi": [8, 11, 14],
+    "V/vi": [4, 8, 11],
+    "viidim/ii": [1, 4, 7],
+    "V/ii": [9, 13, 16],
+    "viidim/V": [6, 9, 12],
+    "V/V": [2, 6, 9],
+    "viidim/IV": [4, 7, 10],
+    "V/IV": [0, 4, 7],
+    "iii": [4, 7, 11],
+    "vi": [9, 12, 16],
+    "IV": [5, 9, 12],
+    "ii": [2, 5, 9],
+    "viidim": [11, 14, 17],
+    "V6/4": [7, 12, 16],
+    "N6": [5, 8, 13],
+    "+6": [8, 12, 14],
+    "V": [7, 11, 14],
+    "viidim/VII": [9, 12, 15],
+    "V/VII": [5, 9, 12],
+    "viidim/III": [2, 5, 8],
+    "V/III": [10, 14, 17],
+    "iv": [5, 8, 12],
+    "VII": [10, 14, 17],
+    "III": [3, 7, 10],
+    "VI": [8, 12, 15],
+    "iidim": [2, 5, 8],
+    "i": [0, 3, 7]
+}
+
 key_to_num = {
     'C': 0, 'C#': 1, 'Db': 1,
     'D': 2, 'D#': 3, 'Eb': 3,
@@ -56,7 +89,8 @@ def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
 
 def voice_lead(chord_a, chord_b):
     # create a list of the possible permutations of the chord
-    all_poss = [p for p in permutations(chord_b) if p[0] == chord_b[0]]
+    # for now, each chord is assumed to be in root position, with a repeating root and no 7th
+    all_poss = [[chord_b[0]] + list(p) for p in permutations(chord_b)]
 
     # next, for each permutation, we consider every version that fits within the voice ranges
     # we add each possibility to a list
