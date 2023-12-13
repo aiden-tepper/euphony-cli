@@ -20,5 +20,5 @@ if __name__ == "__main__":
     progression, key, major_minor = get_progression()
     chords = get_voice_leading(progression, key, major_minor)
     play(chords)
-    # generate_notation('lilypond/notes.ly', chords, key, major_minor)
-    # open_pdf('lilypond/notes.pdf')
+    generate_notation('lilypond/notes.ly', chords, key, major_minor)
+    open_pdf('lilypond/notes.pdf')
