@@ -81,7 +81,11 @@ lower_limits = [4, 12, 19, 24]
 upper_limits = [24, 31, 38, 43]
 
 def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
-    chord = chord_mapping[roman_numeral]
+    if roman_numeral[-1] == "7":
+        chord = chord_mapping_sevenths[roman_numeral[:-1]]
+    else:
+        chord = chord_mapping[roman_numeral]
+        chord = [chord[0]] + chord
     offset = key_to_num[key]
     if major_minor == "minor":
         offset = (offset - 3) % 12
@@ -89,8 +93,10 @@ def get_chord_notes(key: str, major_minor: str, roman_numeral: str) -> list:
 
 def voice_lead(chord_a, chord_b):
     # create a list of the possible permutations of the chord
-    # for now, each chord is assumed to be in root position, with a repeating root and no 7th
-    all_poss = [[chord_b[0]] + list(p) for p in permutations(chord_b)]
+    # for now, each chord is assumed to be in root position
+
+    ## ___________________________________ TODO FIX THIS
+    all_poss = [p for p in permutations(chord_b) if p[0] == chord_b[0]]
 
     # next, for each permutation, we consider every version that fits within the voice ranges
     # we add each possibility to a list

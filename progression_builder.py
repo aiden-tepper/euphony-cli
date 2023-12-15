@@ -18,12 +18,19 @@ def get_progression() -> str:
         print("\nCURRENT CHORD: ", curr)
         print("Possible next chords: ", list(Chart.neighbors(curr)))
         next = input("Enter the next chord (or \"done\"): ")
+        valid = False
+        if next in Chart.neighbors(curr):
+            valid = True
+        if next[-1] == "7" and next[:-1] in Chart.neighbors(curr):
+            valid = True
         if next == "done":
             break
-        if next not in Chart.neighbors(curr):
+        if not valid:
             print("Invalid chord transition. Please try again.")
             continue
         progression.append(next)
         curr = next
+    
+    print("\nPROGRESSION: ", progression)
 
     return progression, key, major_minor
