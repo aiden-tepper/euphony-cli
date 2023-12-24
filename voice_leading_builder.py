@@ -1,4 +1,5 @@
 from itertools import product, permutations
+from play_prog import play
 
 chord_mapping_sevenths = {
     "I": [0, 4, 7, 11],
@@ -155,5 +156,6 @@ def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> l
     return voice_leading
 
 if __name__ == "__main__":
-    prog = get_voice_leading(['ii', 'V', 'I'], "C", "major")
+    prog = get_voice_leading(['ii', 'V7', 'I7'], "C", "major")
     print('prog: ' + str(prog))
+    play(prog)

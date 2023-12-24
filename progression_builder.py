@@ -16,11 +16,14 @@ def get_progression() -> str:
 
     while True:
         print("\nCURRENT CHORD: ", curr)
+        if curr[-1] == "7":
+            curr = curr[:-1]
         print("Possible next chords: ", list(Chart.neighbors(curr)))
         next = input("Enter the next chord (or \"done\"): ")
-        valid = False
-        if next in Chart.neighbors(curr):
-            valid = True
+        valid = True
+        # valid = False
+        # if next in Chart.neighbors(curr):
+        #     valid = True
         if next[-1] == "7" and next[:-1] in Chart.neighbors(curr):
             valid = True
         if next == "done":
