@@ -9,6 +9,7 @@ def play(chords):
     fs.setting('synth.gain', 0.8)
 
     sfid = fs.sfload("resources/Gothorgn.sf2")
+    # sfid = fs.sfload("resources/TimGM6mb.sf2")
     fs.program_select(0, sfid, 0, 0)
 
     for chord in chords:
