@@ -1,4 +1,4 @@
-from chord_graphs import Major, Minor
+from resources.chord_graphs import Major, Minor
 
 def get_progression() -> str:
     # Start the interactive interface

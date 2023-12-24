@@ -1,13 +1,13 @@
 global = {
-  \key d \major
+  \key c \major
   \time 4/4
 }
 
 \parallelMusic voiceA,voiceB,voiceC,voiceD {
-d4 a b g d |
-d4 e d b a |
-ges4 a ges d des |
-a4 des b g ges |
+c4 a d g c |
+e4 e f f e |
+g4 g a b g |
+b4 des c d b |
 }
 
 \score {
