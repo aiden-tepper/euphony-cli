@@ -3,7 +3,7 @@ import os
 import sys
 
 from progression_builder import get_progression
-from voice_leading_builder import get_voice_leading
+from voice_leading.voice_leading_builder import get_voice_leading
 from lilypond.lilypond_builder import generate_notation
 from play_prog import play
 

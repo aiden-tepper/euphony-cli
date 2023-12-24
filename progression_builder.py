@@ -20,10 +20,13 @@ def get_progression() -> str:
             curr = curr[:-1]
         print("Possible next chords: ", list(Chart.neighbors(curr)))
         next = input("Enter the next chord (or \"done\"): ")
+
+        # NOTE: TEMPORARILY CHANGED FOR TESTING TO ALLOW FOR NON-GRAPH CHANGES
         valid = True
         # valid = False
         # if next in Chart.neighbors(curr):
         #     valid = True
+
         if next[-1] == "7" and next[:-1] in Chart.neighbors(curr):
             valid = True
         if next == "done":
