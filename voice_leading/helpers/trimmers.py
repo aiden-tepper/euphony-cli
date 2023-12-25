@@ -29,6 +29,25 @@ def parallel_contrary_fifths(prev, options):
             trimmed.append(curr)
     return trimmed
 
+# remove voicings where any two voicings an octave apart move in parallel (or contrary to another octave)
+def parallel_contrary_octaves(prev, options):
+    trimmed = []
+    fifths = []
+    for a in range(4):
+        for b in range(a+1, 4):
+            interval = prev[b] - prev[a]
+            if interval % 12 == 0:
+                fifths.append((a, b))
+    for curr in options:
+        valid = True
+        for (a, b) in fifths:
+            interval = curr[b] - curr[a]
+            if interval % 12 == 0:
+                valid = False
+        if valid:
+            trimmed.append(curr)
+    return trimmed
+
 # if a voicing exists with a common tone, remove non-common tone voicings
 def common_tone(prev, options):
     trimmed = []
@@ -50,6 +69,7 @@ def trim(prev, options):
     if prev:
         options = third_jump(prev, options)
         options = parallel_contrary_fifths(prev, options)
+        options = parallel_contrary_octaves(prev, options)
         options = common_tone(prev, options)
     return options
 

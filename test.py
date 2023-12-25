@@ -11,3 +11,7 @@ if __name__ == "__main__":
 # chord_b: [5, 5, 9, 12]
 # 1) [5, 17, 24, 33]
 # 2) [17, 21, 24, 29]
+    
+# how to avoid hidden/direct 5ths/octaves?
+
+# any way to trim based on leading tones (7th chords resolving)?
