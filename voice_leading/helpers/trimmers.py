@@ -10,18 +10,20 @@ def octave_apart(options):
 def third_jump(prev, options):
     return [i for i in options if abs(prev[1] - i[1]) <= 4 and abs(prev[2] - i[2]) <= 4 and abs(prev[3] - i[3]) <= 4]
 
-# remove voicings where any two voicings a fifth apart move in parallel
-def parallel_fifths(prev, options):
+# remove voicings where any two voicings a 5th apart move in parallel (or contrary to another 5th)
+def parallel_contrary_fifths(prev, options):
     trimmed = []
     fifths = []
     for a in range(4):
         for b in range(a+1, 4):
-            if prev[b] - prev[a] == 7:
+            interval = prev[b] - prev[a]
+            if interval % 7 == 0:
                 fifths.append((a, b))
     for curr in options:
         valid = True
         for (a, b) in fifths:
-            if curr[b] - curr[a] == 7:
+            interval = curr[b] - curr[a]
+            if interval % 7 == 0:
                 valid = False
         if valid:
             trimmed.append(curr)
@@ -40,15 +42,14 @@ def common_tone(prev, options):
                 trimmed.append(curr)
     else:
         trimmed = options
-    return(trimmed)
-    
+    return(trimmed)   
 
 def trim(prev, options):
     options = voice_cross(options)
     options = octave_apart(options)
     if prev:
         options = third_jump(prev, options)
-        options = parallel_fifths(prev, options)
+        options = parallel_contrary_fifths(prev, options)
         options = common_tone(prev, options)
     return options
 
