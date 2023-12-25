@@ -20,7 +20,10 @@ note_mapping = {
 }
 
 def to_note(note_num) -> str:
-    return num_to_note[note_num % 12]
+    note = num_to_note[note_num % 12]
+    for _ in range(int(note_num / 12)):
+        note += "'"
+    return note
 
 def generate_notation(filename, chords, key, major_minor):
     with open(filename, 'w') as file:
@@ -30,13 +33,14 @@ def generate_notation(filename, chords, key, major_minor):
             global = {{
               \\key {note_mapping[key]} \\{major_minor}
               \\time 4/4
+              \\version "2.22.1"
             }}\n\n''')
 
         file.write(global_string)
 
-        # chords = [[10, 13, 20, 24], [10, 15, 19, 25], [8, 15, 19, 24]]
+        # transpose the chords list
         chords = list(zip(*chords))
-        # chords = [[10, 10, 8], [13, 15, 15], [20, 19, 19], [24, 25, 24]]
+        chords = reversed(chords)
 
         file.write("\\parallelMusic voiceA,voiceB,voiceC,voiceD {\n")
         for voice in chords:
@@ -57,17 +61,17 @@ def generate_notation(filename, chords, key, major_minor):
              \\new Staff {
                \\global
                <<
-                 \\relative c'' \\voiceA
+                 \\absolute c \\voiceA
                  \\\\
-                 \\relative c'  \\voiceB
+                 \\absolute c  \\voiceB
                >>
              }
              \\new Staff {
                \\global \\clef bass
                <<
-                 \\relative c \\voiceC
+                 \\absolute c \\voiceC
                  \\\\
-                 \\relative c \\voiceD
+                 \\absolute c \\voiceD
                >>
              }
           >>

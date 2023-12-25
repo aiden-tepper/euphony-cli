@@ -6,6 +6,8 @@ if __name__ == "__main__":
 
     # play([[12, 21, 24, 29], [5, 17, 24, 33]])
 
+# what's going on with lilypond
+
 # what to do about picardy cadence?
 # chord_a: [12, 21, 24, 29]
 # chord_b: [5, 5, 9, 12]

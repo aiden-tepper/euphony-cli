@@ -1,13 +1,14 @@
 global = {
   \key c \major
   \time 4/4
+  \version "2.22.1"
 }
 
 \parallelMusic voiceA,voiceB,voiceC,voiceD {
-c4 a d g c |
-e4 e f f e |
-g4 g a b g |
-b4 des c d b |
+d''4 d'' e'' |
+a'4 b' c'' |
+f'4 g' g' |
+d'4 g c' |
 }
 
 \score {
@@ -15,17 +16,17 @@ b4 des c d b |
              \new Staff {
                \global
                <<
-                 \relative c'' \voiceA
+                 \absolute c \voiceA
                  \\
-                 \relative c'  \voiceB
+                 \absolute c  \voiceB
                >>
              }
              \new Staff {
                \global \clef bass
                <<
-                 \relative c \voiceC
+                 \absolute c \voiceC
                  \\
-                 \relative c \voiceD
+                 \absolute c \voiceD
                >>
              }
           >>
