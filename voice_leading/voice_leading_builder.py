@@ -19,6 +19,7 @@ def voice_lead(chord_a, chord_b):
         print('chord_a: ' + str(chord_a))
         print('chord_b: ' + str(chord_b))
 
+    options = sorted(options)
     for i, voicing in enumerate(options, start=1):
         print(f"{i}) {voicing}")
 
