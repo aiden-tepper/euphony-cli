@@ -27,13 +27,30 @@ def parallel_fifths(prev, options):
             trimmed.append(curr)
     return trimmed
 
+# if a voicing exists with a common tone, remove non-common tone voicings
+def common_tone(prev, options):
+    trimmed = []
+    common_tone = False
+    for curr in options:
+        if prev[1] == curr[1] or prev[2] == curr[2] or prev[3] == curr[3]:
+            common_tone = True
+    if common_tone:
+        for curr in options:
+            if prev[1] == curr[1] or prev[2] == curr[2] or prev[3] == curr[3]:
+                trimmed.append(curr)
+    else:
+        trimmed = options
+    return(trimmed)
+    
+
 def trim(prev, options):
     options = voice_cross(options)
     options = octave_apart(options)
     if prev:
         options = third_jump(prev, options)
         options = parallel_fifths(prev, options)
+        options = common_tone(prev, options)
     return options
 
 if __name__ == "__main__":
-    parallel_fifths([0, 2, 9, 100], [[0, 3, 10, 100], [0, 4, 10, 100]])
+    trim([14, 26, 29, 33], [[19, 23, 26, 31], [19, 26, 31, 35]])

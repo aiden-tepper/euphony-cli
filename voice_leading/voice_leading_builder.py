@@ -10,6 +10,15 @@ def voice_lead(chord_a, chord_b):
     # remove illegal options
     options = trim(chord_a, options)
 
+    # if only one option, skip
+    if len(options) == 1:
+        return options[0]
+
+    # NOTE: FOR TESTING PURPOSES
+    if chord_a:
+        print('chord_a: ' + str(chord_a))
+        print('chord_b: ' + str(chord_b))
+
     for i, voicing in enumerate(options, start=1):
         print(f"{i}) {voicing}")
 
@@ -35,6 +44,7 @@ def get_voice_leading(progression_as_str: list, key: str, major_minor: str) -> l
     return voice_leading
 
 if __name__ == "__main__":
-    prog = get_voice_leading(['ii', 'V7', 'I7'], "C", "major")
+    # prog = get_voice_leading(['ii', 'V7', 'I7'], "C", "major")
+    prog = get_voice_leading(['i', 'iv', 'V/V', 'V6/4', 'I', 'i', 'III', 'viidim/vi', 'VI7', 'iv7', 'V7', 'i'], "Ab", 'minor')
     print('prog: ' + str(prog))
     play(prog)
