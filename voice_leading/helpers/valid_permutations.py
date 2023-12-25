@@ -31,4 +31,18 @@ def get_valid_permutations(chord):
         combinations.append(list(product(c[0], c[1], c[2], c[3])))
     combinations = [i for r in combinations for i in r]
 
+    # remove cases of bass note repeated in non-7th chords
+    combinations = [i for i in combinations if i[1] != i[0] and i[2] != i[0] and i[3] != i[0]]
+    
+    # remove repeats
+    no_repeats = []
+    for c in combinations:
+        if c not in no_repeats:
+            no_repeats.append(c)
+    combinations = no_repeats
+
     return [list(combination) for combination in combinations]
+
+if __name__ == "__main__":
+    get_valid_permutations([3, 3, 5, 9])
+    # print(get_valid_permutations([3, 5, 9]))
