@@ -1,13 +1,18 @@
 import textwrap
 import subprocess
 
-num_to_note = {
-    0: 'c', 1: 'cis', 1: 'des',
-    2: 'd', 3: 'dis', 3: 'ees',
-    4: 'e', 5: 'f', 6: 'fis',
-    6: 'ges', 7: 'g', 8: 'gis',
-    8: 'aes', 9: 'a', 10: 'ais',
-    10: 'bes', 11: 'b'
+num_to_note_flats = {
+    0: 'c', 1: 'des', 2: 'd',
+    3: 'ees', 4: 'e', 5: 'f',
+    6: 'ges', 7: 'g', 8: 'aes',
+    9: 'a', 10: 'bes', 11: 'b'
+}
+
+num_to_note_sharps = {
+    0: 'c', 1: 'cis', 2: 'd',
+    3: 'dis', 4: 'e', 5: 'f',
+    6: 'fis', 7: 'g', 8: 'gis',
+    9: 'a', 10: 'ais', 11: 'b'
 }
 
 note_mapping = {
@@ -19,7 +24,11 @@ note_mapping = {
     'Bb': 'bes', 'B': 'b'
 }
 
-def to_note(note_num) -> str:
+def to_note(note_num, sharp) -> str:
+    if sharp:
+        num_to_note = num_to_note_sharps
+    else:
+        num_to_note = num_to_note_flats
     note = num_to_note[note_num % 12]
     for _ in range(int(note_num / 12)):
         note += "'"
@@ -42,11 +51,24 @@ def generate_notation(filename, chords, key, major_minor):
         chords = list(zip(*chords))
         chords = reversed(chords)
 
+        # determine if the key signature is sharp or flat
+        if major_minor == 'major':
+          if key in ['C' 'G', 'D', 'A', 'E', 'B', 'F#', 'C#']:
+            sharp = True
+          else:
+            sharp = False
+        else:
+          if key in ['A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#']:
+            sharp = True
+          else:
+            sharp = False
+            
+
         file.write("\\parallelMusic voiceA,voiceB,voiceC,voiceD {\n")
         for voice in chords:
             line = ""
             for i, note_num in enumerate(voice):
-                note = to_note(note_num)
+                note = to_note(note_num, sharp)
                 line += str(note)
                 if i == 0:
                     line += str(4)
@@ -61,17 +83,17 @@ def generate_notation(filename, chords, key, major_minor):
              \\new Staff {
                \\global
                <<
-                 \\absolute c \\voiceA
+                 \\fixed c \\voiceA
                  \\\\
-                 \\absolute c  \\voiceB
+                 \\fixed c,  \\voiceB
                >>
              }
              \\new Staff {
                \\global \\clef bass
                <<
-                 \\absolute c \\voiceC
+                 \\fixed c, \\voiceC
                  \\\\
-                 \\absolute c \\voiceD
+                 \\fixed c, \\voiceD
                >>
              }
           >>

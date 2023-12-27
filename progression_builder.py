@@ -2,7 +2,7 @@ from resources.chord_graphs import Major, Minor
 
 def get_progression() -> str:
     # Start the interactive interface
-    key = input("Enter the key (C#, Abm, ...):  ")
+    key = input("Enter the key (adding 'b' to denote flat, '#' to denote sharp, and 'm' to denote minor):  ")
     curr = input("Enter the starting chord: ")
     progression = [curr]
 

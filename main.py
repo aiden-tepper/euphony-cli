@@ -5,7 +5,7 @@ import sys
 from progression_builder import get_progression
 from voice_leading.voice_leading_builder import get_voice_leading
 from lilypond.lilypond_builder import generate_notation
-from play_prog import play
+from play_prog import *
 
 def open_pdf(filename):
     # open the generated PDF file
@@ -17,9 +17,9 @@ def open_pdf(filename):
         subprocess.call(('xdg-open', filename))
 
 if __name__ == "__main__":
-    # progression, key, major_minor = get_progression()
-    # chords = get_voice_leading(progression, key, major_minor)
-    # generate_notation('lilypond/notes.ly', chords, key, major_minor)
-    generate_notation('lilypond/notes.ly', [[14, 17, 21, 26], [7, 19, 23, 26], [12, 19, 24, 28]], 'C', 'major')
+    progression, key, major_minor = get_progression()
+    chords = get_voice_leading(progression, key, major_minor)
+    generate_notation('lilypond/notes.ly', chords, key, major_minor)
+    # generate_notation('lilypond/notes.ly', [[14, 17, 21, 26], [7, 19, 23, 26], [12, 19, 24, 28]], 'C', 'major')
     open_pdf('lilypond/notes.pdf')
-    # play(chords)
+    play_organ(chords)
