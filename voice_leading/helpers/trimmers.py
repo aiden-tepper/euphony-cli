@@ -1,3 +1,4 @@
+import random
 from voice_leading.helpers.checkers import *
 
 # remove voicings where voices cross each other
@@ -80,9 +81,10 @@ def common_tone(prev, options):
     return(trimmed)
 
 # last resort, favor voicings with more contrary motion
+
 def contrary_motion(prev, options):
     max_score = 0
-    best = None
+    best = []
     for curr in options:
         score = 0
         for i in range(4):
@@ -91,10 +93,11 @@ def contrary_motion(prev, options):
                     score += 1
         if score > max_score:
             max_score = score
-            best = curr
+            best = [curr]
         if score == max_score:
-            print("fuck")
-    return [best]
+            print('fuck')
+            best.append(curr)
+    return [random.choice(best)]
 
 trimmers = [third_jump, parallel_contrary_fifths, parallel_contrary_octaves, hidden_fifths, hidden_octaves, common_tone, contrary_motion]
 
@@ -106,6 +109,8 @@ def trim(prev, options):
         while len(options) > 1:
             options = trimmers[curr](prev, options)
             curr += 1
+    else:
+        options = [random.choice(options)]
     return options
 
 if __name__ == "__main__":
