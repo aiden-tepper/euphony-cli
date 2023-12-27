@@ -1,27 +1,12 @@
-# are two notes a 5th apart?
-def fifth(a, b):
-    for i in range(7, b - a + 1, 12):
-        if b - a % i == 0:
-            return True
-    return False
-
-# are two notes an 8ve apart?
-def octave(a, b):
-    return b - a % 12 == 0
-
-# are two voices a and b moving in similar motion?
-def similar_motion(prev, curr, a, b):
-    diff_a = curr[a] - prev[a]
-    diff_b = curr[b] - prev[b]
-    return diff_a > 0 == diff_b > 0
+from voice_leading.helpers.checkers import *
 
 # remove voicings where voices cross each other
 def voice_cross(options):
     return [i for i in options if i[0] < i[1] < i[2] < i[3]]
 
-# remove voicings where S, A, or T are more than an 8ve apart
+# remove voicings where S, A, or T are more than an 8ve apart and B-T are more than a 12th apart
 def octave_apart(options):
-    return [i for i in options if i[1] - i[0] <= 12 and i[2] - i[1] <= 12]
+    return [i for i in options if i[1] - i[0] <= 19 and i[2] - i[1] <= 12 and i[3] - i[2] <= 12]
 
 # remove voicings where S, A, or T move by more than a 3rd
 def third_jump(prev, options):
@@ -111,22 +96,16 @@ def contrary_motion(prev, options):
             print("fuck")
     return [best]
 
-def further(count=[0]): 
-
-    count[0]+=1
+trimmers = [third_jump, parallel_contrary_fifths, parallel_contrary_octaves, hidden_fifths, hidden_octaves, common_tone, contrary_motion]
 
 def trim(prev, options):
     options = voice_cross(options)
     options = octave_apart(options)
     if prev:
-        options = third_jump(prev, options)
-        options = parallel_contrary_fifths(prev, options)
-        options = parallel_contrary_octaves(prev, options)
-        options = hidden_fifths(prev, options)
-        options = hidden_octaves(prev, options)
-        options = common_tone(prev, options)
-        if len(options) > 1:
-            options = contrary_motion(prev, options)
+        curr = 0
+        while len(options) > 1:
+            options = trimmers[curr](prev, options)
+            curr += 1
     return options
 
 if __name__ == "__main__":
