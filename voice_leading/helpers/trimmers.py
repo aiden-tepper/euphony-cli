@@ -1,16 +1,19 @@
+# are two notes a 5th apart?
 def fifth(a, b):
     for i in range(7, b - a + 1, 12):
         if b - a % i == 0:
             return True
     return False
 
+# are two notes an 8ve apart?
 def octave(a, b):
     return b - a % 12 == 0
 
-def similar_motion(prev, curr):
-    diff_b = curr[0] - prev[0]
-    diff_s = curr[3] - prev[3]
-    return diff_b > 0 == diff_s > 0
+# are two voices a and b moving in similar motion?
+def similar_motion(prev, curr, a, b):
+    diff_a = curr[a] - prev[a]
+    diff_b = curr[b] - prev[b]
+    return diff_a > 0 == diff_b > 0
 
 # remove voicings where voices cross each other
 def voice_cross(options):
@@ -62,7 +65,7 @@ def parallel_contrary_octaves(prev, options):
 def hidden_fifths(prev, options):
     trimmed = []
     for curr in options:
-        if similar_motion(prev, curr) and fifth(prev[0], prev[3]):
+        if similar_motion(prev, curr, 0, 3) and fifth(prev[0], prev[3]):
             continue
         trimmed.append(curr)
     return trimmed
@@ -71,7 +74,7 @@ def hidden_fifths(prev, options):
 def hidden_octaves(prev, options):
     trimmed = []
     for curr in options:
-        if similar_motion(prev, curr) and octave(prev[0], prev[3]):
+        if similar_motion(prev, curr, 0, 3) and octave(prev[0], prev[3]):
             continue
         trimmed.append(curr)
     return trimmed
@@ -89,7 +92,28 @@ def common_tone(prev, options):
                 trimmed.append(curr)
     else:
         trimmed = options
-    return(trimmed)  
+    return(trimmed)
+
+# last resort, favor voicings with more contrary motion
+def contrary_motion(prev, options):
+    max_score = 0
+    best = None
+    for curr in options:
+        score = 0
+        for i in range(4):
+            for j in range(i+1, 4):
+                if not similar_motion(prev, curr, i, j):
+                    score += 1
+        if score > max_score:
+            max_score = score
+            best = curr
+        if score == max_score:
+            print("fuck")
+    return [best]
+
+def further(count=[0]): 
+
+    count[0]+=1
 
 def trim(prev, options):
     options = voice_cross(options)
@@ -98,9 +122,11 @@ def trim(prev, options):
         options = third_jump(prev, options)
         options = parallel_contrary_fifths(prev, options)
         options = parallel_contrary_octaves(prev, options)
-        options = common_tone(prev, options)
         options = hidden_fifths(prev, options)
         options = hidden_octaves(prev, options)
+        options = common_tone(prev, options)
+        if len(options) > 1:
+            options = contrary_motion(prev, options)
     return options
 
 if __name__ == "__main__":
