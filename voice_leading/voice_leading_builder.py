@@ -1,7 +1,7 @@
 from voice_leading.helpers.get_chord_notes import get_chord_notes
 from voice_leading.helpers.trimmers import trim
 from voice_leading.helpers.valid_permutations import get_valid_permutations
-from play_prog import play
+from play_prog import *
 
 def voice_lead(chord_a, chord_b):
     # get all possible valid permutations of the current chord
