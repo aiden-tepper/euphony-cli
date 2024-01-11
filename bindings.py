@@ -7,7 +7,7 @@ def next_chords(curr: str, key: str, major_minor: str) -> list:
     Returns the possible next chords in the progression.
     """
 
-    if "m" in key:
+    if major_minor == "minor":
         Chart = Minor
         key = key[:-1]
     else:
