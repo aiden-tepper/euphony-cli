@@ -19,7 +19,9 @@ def open_pdf(filename):
 if __name__ == "__main__":
     progression, key, major_minor = get_progression()
     chords = get_voice_leading(progression, key, major_minor)
+
     generate_notation('lilypond/notes.ly', chords, key, major_minor)
-    # generate_notation('lilypond/notes.ly', [[14, 17, 21, 26], [7, 19, 23, 26], [12, 19, 24, 28]], 'C', 'major')
+    subprocess.call(['lilypond', '--output=./lilypond/notes', 'lilypond/notes.ly'])
     open_pdf('lilypond/notes.pdf')
+    
     play_organ(chords)

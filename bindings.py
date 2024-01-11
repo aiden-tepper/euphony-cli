@@ -1,6 +1,9 @@
 from resources.chord_graphs import Major, Minor
 from voice_leading.helpers.get_chord_notes import get_chord_notes
 from voice_leading.voice_leading_builder import voice_lead
+from lilypond.lilypond_builder import generate_notation
+from play_prog import *
+import subprocess
 
 def next_chords(curr: str, key: str, major_minor: str) -> list:
     """
@@ -31,4 +34,15 @@ def generate_progression(progression_as_str: list, key: str, major_minor: str) -
         a = voice_lead(a, b)
         result.append(a)
 
+    generate_sheet_music(result, key, major_minor)
+
     return result
+
+def generate_sheet_music(progression: list, key: str, major_minor: str):
+    generate_notation('../resources/notes.ly', progression, key, major_minor)
+    subprocess.call(['lilypond', '--output=../resources/notes', '../resources/notes.ly'])
+    # some code to convert the pdf into a png
+
+def play_audio(chords: list):
+    play_organ(chords)
+    # play_piano(chords)

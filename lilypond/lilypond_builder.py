@@ -99,6 +99,3 @@ def generate_notation(filename, chords, key, major_minor):
           >>
         }
         ''')
-
-    # call LilyPond command-line tool on the file
-    subprocess.call(['lilypond', '--output=./lilypond/notes', filename])
