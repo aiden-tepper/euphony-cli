@@ -40,8 +40,8 @@ def generate_progression(progression_as_str: list, key: str, major_minor: str) -
 
 def generate_sheet_music(progression: list, key: str, major_minor: str):
     generate_notation('../resources/notes.ly', progression, key, major_minor)
-    subprocess.call(['lilypond', '--output=../resources/notes', '../resources/notes.ly'])
-    # some code to convert the pdf into a png
+    # subprocess.call(['lilypond', '--output=../resources/notes', '../resources/notes.ly'])
+    subprocess.call(['lilypond', '-fpng', '-dresolution=600', '-dpreview', '-o', '../resources/output', '../resources/notes.ly'])
 
 def play_audio(chords: list):
     play_organ(chords)
