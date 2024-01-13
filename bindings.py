@@ -39,9 +39,8 @@ def generate_progression(progression_as_str: list, key: str, major_minor: str) -
     return result
 
 def generate_sheet_music(progression: list, key: str, major_minor: str):
-    generate_notation('../resources/notes.ly', progression, key, major_minor)
-    # subprocess.call(['lilypond', '--output=../resources/notes', '../resources/notes.ly'])
-    subprocess.call(['lilypond', '-fpng', '-dresolution=600', '-dpreview', '-o', '../resources/output', '../resources/notes.ly'])
+    generate_notation('/home/aiden/Documents/Euphony/Source/resources/notes.ly', progression, key, major_minor)
+    subprocess.call(['lilypond', '-fpng', '-dresolution=600', '-dpreview', '-o', '/home/aiden/Documents/Euphony/Source/resources/output', '/home/aiden/Documents/Euphony/Source/resources/notes.ly'])
 
 def play_audio(chords: list):
     play_organ(chords)
