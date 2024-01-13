@@ -8,7 +8,7 @@ def play_organ(chords):
     fs.start()
     fs.setting('synth.gain', 0.8)
 
-    sfid = fs.sfload("resources/Gothorgn.sf2")
+    sfid = fs.sfload("/home/aiden/Documents/Euphony/Source/voice-leading-cmdline/resources/Gothorgn.sf2")
     fs.program_select(0, sfid, 0, 0)
 
     for chord in chords:
@@ -39,7 +39,7 @@ def play_piano(chords):
     fs.start()
     fs.setting('synth.gain', 0.8)
 
-    sfid = fs.sfload("resources/TimGM6mb.sf2")
+    sfid = fs.sfload("/home/aiden/Documents/Euphony/Source/voice-leading-cmdline/resources/TimGM6mb.sf2")
     fs.program_select(0, sfid, 0, 0)
 
     for chord in chords:
