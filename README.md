@@ -46,7 +46,7 @@ I welcome contributions from the community! Whether you're fixing a bug, adding 
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Open a Pull Request.
 
-Please make sure your code adheres to the project's coding standards and passes all the tests.
+Please make sure your code adheres to the project's coding standards (undergraduate level or higher I suppose) and passes all the tests (feel free but not compelled to write tests).
 
 ## License
 
@@ -57,22 +57,25 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 - Thanks to the developers and communities behind Python, LilyPond, and FluidSynth for creating and maintaining these powerful tools that make Euphony-CLI possible.
 - A special shoutout to the music theory community and my previous music theory professors for providing the inspiration and knowledge that fuel this project.
 
-## Future Plans
+## Audio Plugin Progress
 
-A JUCE-based audio plugin is currently in development (by myself), in which the program's features can be used via a GUI and MIDI can be easily generated and dragged into projects. The JUCE library would allow  
+A JUCE-based audio plugin is currently in development (by myself), in which the program's features can be used via a GUI and MIDI can be easily generated and dragged into projects. The JUCE library would allow shipping of the plugin binaries to all major DAWs through AAX, AU, and VST plugin formats. This next phase of the project quickly blew up in scope, and if you're interested in getting involed, please feel free to reach out!
+
+You can track my current work at (https://github.com/aiden-tepper/euphony)[https://github.com/aiden-tepper/euphony].
+
+## Future Plans
 
 - **Integration with MusicXML**: For wider compatibility with music notation software.
 - **Expanded Harmony Options**: Including more exotic chords and voice leading techniques.
 - **User Interface Enhancements**: To make Euphony-CLI even more intuitive and powerful.
 - **Collaboration Features**: Enabling multiple users to work on harmony lines simultaneously.
 
-Stay tuned for updates as we continue to develop Euphony-CLI into an even more versatile tool for music composition, production, and education.
+Stay tuned for updates as I continue to develop Euphony-CLI into an even more versatile tool for music composition, production, and education.
 
+## Reference
 
+### Rules
 
-
-
-## Rules
 > The main concerns of composers writing homorhythmic, homophonic music were both unity and independence. This seems contrary at first. However, unity is a vertical dimension concern (the chords), while independence is a horizontal concern (the lines). Each of these concerns is addressed in princples of voice spacing.
 > [Sun Music School](https://sunmusicschool.weebly.com/uploads/2/5/4/5/25453716/voice_leading.pdf)
 * Unity
@@ -96,13 +99,9 @@ Stay tuned for updates as we continue to develop Euphony-CLI into an even more v
   * avoid parallel octaves by contrary motion
   * avoid hidden/direct fifths and octaves
   * avoid using the +2 interval melodically
- 
-## Points of User Input
-* SATB vs Keyboard Voicing
-  * SATB keeps SA on treble staff and TB on bass staff, both open and close structure is okay
-  * Keyboard voicing places SAT on treble staff and B on bass staff, close structure is most frequent
- 
-## Algorithm 
+  
+### Algorithm 
+
 *(for root position chords)*
 * Is chord a 4th or 5th away?
   * Common tone approach
@@ -122,9 +121,12 @@ Stay tuned for updates as we continue to develop Euphony-CLI into an even more v
   * move the bass to the root of the next chord
   * in contrary motion to the bass, move the remaining voices to the nearest chord tone of the next chord
 
-## Notes
+### Notes
+
 *If no octave changing mark is used on a pitch, its octave is calculated so that the interval with the previous note is less than a fifth. As SAT will not move by an interval larger than a 3rd, this is only a concern for keeping B within range.*
-### Voice Ranges
+
+#### Voice Ranges
+
 * Soprano
   * C4 - G5
   * C' - G''
@@ -144,6 +146,7 @@ Stay tuned for updates as we continue to develop Euphony-CLI into an even more v
   * E, - C'
   * 0 - 20
 
-## References
+### Links
+
 [Sun Music School](https://sunmusicschool.weebly.com/uploads/2/5/4/5/25453716/voice_leading.pdf)
 [Puget Sound Music Theory](https://musictheory.pugetsound.edu/mt21c/MusicTheory.html)
